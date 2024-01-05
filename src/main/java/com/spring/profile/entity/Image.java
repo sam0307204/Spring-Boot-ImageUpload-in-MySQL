@@ -1,29 +1,44 @@
 package com.spring.profile.entity;
 
+import org.apache.tomcat.util.codec.binary.Base64;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@Builder
 @Entity
-@Table(name = "image")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "profiles")
 public class Image {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    private String filename;
+    @Column(nullable = false)
+    private String fullName;
 
-    @Column(name ="mime_type")
-    private String mimeType;
+    @Column(nullable = false)
+    private String designation;
 
-    private byte[] data;
+    @Column
+    private String githubLink;
+
+    @Column
+    private String twitterLink;
+
+    @Column
+    private String email;
+
+    @Lob
+    @Column
+    private byte[] imageData;
+
+    public String generateBase64Image() {
+        return Base64.encodeBase64String(this.imageData);
+    }
 }
